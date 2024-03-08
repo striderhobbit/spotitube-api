@@ -1,11 +1,10 @@
 import cors from 'cors';
 import express, { json } from 'express';
-import session from 'express-session';
-import { readFile } from 'fs/promises';
 import { createServer } from 'https';
 import { clone } from 'lodash';
 import morgan from 'morgan';
 import { forkJoin, tap } from 'rxjs';
+import { authConfig } from './auth.conf';
 import { authRouter } from './routes/auth';
 import { spotifyRouter } from './routes/spotify';
 import { userRouter } from './routes/user';
@@ -24,13 +23,6 @@ export class Server {
 
     this.app.use(json());
     this.app.use(cors());
-    this.app.use(
-      session({
-        resave: false,
-        saveUninitialized: false,
-        secret: 'Keep it secret, keep it safe!',
-      })
-    );
     this.app.use(morgan('dev'));
     this.app.use(spotifyRouter);
     this.app.use(authRouter);
@@ -38,10 +30,7 @@ export class Server {
 
     console.clear();
 
-    forkJoin({
-      cert: readFile('server.crt', 'utf-8'),
-      key: readFile('server.key', 'utf-8'),
-    })
+    forkJoin(authConfig.ssl)
       .pipe(
         tap((options) =>
           createServer(options, this.app).listen(this.config.port, () => {
