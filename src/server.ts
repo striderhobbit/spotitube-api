@@ -1,5 +1,6 @@
 import cors from 'cors';
 import express, { json } from 'express';
+import session from 'express-session';
 import { createServer } from 'https';
 import { clone } from 'lodash';
 import morgan from 'morgan';
@@ -23,6 +24,13 @@ export class Server {
 
     this.app.use(json());
     this.app.use(cors());
+    this.app.use(
+      session({
+        resave: false,
+        saveUninitialized: false,
+        secret: 'Keep it secret, keep it safe!',
+      })
+    );
     this.app.use(morgan('dev'));
     this.app.use(spotifyRouter);
     this.app.use(authRouter);
