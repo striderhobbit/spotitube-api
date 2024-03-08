@@ -50,7 +50,7 @@ export class Server {
     this.#app.use(
       express
         .Router()
-        .get('/spotify/auth', (req, res) =>
+        .get('/api/spotify/auth', (req, res) =>
           res.redirect(
             `${SPOTIFY_BASE_URI}/authorize?` +
               stringify({
@@ -63,7 +63,7 @@ export class Server {
           )
         )
         .get<any, any, any, any, { code: string }>(
-          '/spotify/auth/callback',
+          '/api/spotify/auth/callback',
           (req, res) =>
             axios
               .post(
