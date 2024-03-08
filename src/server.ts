@@ -131,7 +131,7 @@ export class Server {
           if (code == null) {
             res.sendStatus(HttpStatusCode.Unauthorized);
           } else {
-            verify(code, JWT_SECRET!, (errors, { publicUser }: any) => {
+            verify(code, JWT_SECRET!, (errors, payload: any) => {
               if (errors != null) {
                 res.sendStatus(HttpStatusCode.Unauthorized);
               } else {
@@ -139,7 +139,7 @@ export class Server {
                   .then<User[]>(JSON.parse)
                   .then((users) => {
                     const user = find(users, {
-                      id: (publicUser as PublicUser).id,
+                      id: (payload.publicUser as PublicUser).id,
                     });
 
                     if (user == null) {
@@ -171,11 +171,11 @@ export class Server {
           if (access_token == null) {
             res.sendStatus(HttpStatusCode.Unauthorized);
           } else {
-            verify(access_token, JWT_SECRET!, (errors, { publicUser }: any) => {
+            verify(access_token, JWT_SECRET!, (errors, payload: any) => {
               if (errors != null) {
                 res.sendStatus(HttpStatusCode.Unauthorized);
               } else {
-                res.send(publicUser as PublicUser);
+                res.send(payload.publicUser as PublicUser);
               }
             });
           }
