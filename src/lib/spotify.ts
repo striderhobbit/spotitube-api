@@ -1,12 +1,10 @@
-import { configDotenv } from 'dotenv';
 import SpotifyWebApi from 'spotify-web-api-node';
-
-configDotenv();
+import { authConfig } from '../auth.conf';
 
 const spotify = new SpotifyWebApi({
-  clientId: process.env['SPOTIFY_CLIENT_ID'],
-  clientSecret: process.env['SPOTIFY_CLIENT_SECRET'],
-  redirectUri: process.env['SPOTIFY_REDIRECT_URI'],
+  clientId: authConfig.spotify.clientId,
+  clientSecret: authConfig.spotify.clientSecret,
+  redirectUri: authConfig.spotify.redirectUri,
 });
 
 spotify.setAccessToken(
