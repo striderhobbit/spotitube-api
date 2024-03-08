@@ -1,4 +1,5 @@
 import axios, { HttpStatusCode } from 'axios';
+import { compareSync } from 'bcrypt';
 import cors from 'cors';
 import { randomBytes } from 'crypto';
 import { configDotenv } from 'dotenv';
@@ -144,7 +145,9 @@ export class Server {
 
                     if (user == null) {
                       res.sendStatus(HttpStatusCode.NotFound);
-                    } else if (req.body.password !== user.private.password) {
+                    } else if (
+                      !compareSync(req.body.password, user.private.password)
+                    ) {
                       res.sendStatus(HttpStatusCode.Forbidden);
                     } else {
                       res.send({

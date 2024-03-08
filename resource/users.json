@@ -2,7 +2,7 @@
   {
     "id": "foobar",
     "private": {
-      "password": "1234"
+      "password": "$2b$10$oyA4zpblpz9/NxiChBnwJ.ETrLP6X53azpqL/CXUXpnljM1wj2XqK"
     }
   }
 ]
